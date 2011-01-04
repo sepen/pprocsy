@@ -5,16 +5,24 @@
 <title>pprocsy</title>
 
 <style type="text/css">
+html body
+{
+  margin-top: 50px;
+}
 .inputform
 {
-  display: block;
-  position: static;
+  z-index: 100000;
+  display: inline;
+  position: absolute;
   top: 0;
+  left: 0;
+  width: 100%;
+  height: 28px;
   margin: 0 0 2px 0;
-  border: none;
+  border: 1px solid #c40505;
   font-size: small;
   color: #000000;
-  background: #dddddd;
+  background: #000000;
 }
 .inputform input
 {
@@ -65,6 +73,12 @@ function debugPrint($item, $value)
   }
 }
 
+function filterLine($line)
+{
+  $output = $line;
+  return $output;
+}
+
 function printPage($url, $cache_dir)
 {
   $html = "";
@@ -96,7 +110,7 @@ function printPage($url, $cache_dir)
     {
       debugPrint("getPage::line: ", $line);
 
-      $html .= $line;
+      $html .= filterLine($line);
     }
     fclose($fp);
   }
