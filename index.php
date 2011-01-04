@@ -103,7 +103,7 @@ function getPage($url, $cache_dir)
 /* main                                                                       */
 /* ************************************************************************** */
 
-$cache = "./proxy_cache";
+$cache = "./cache";
 $url = "";
 
 if (isset($_POST['url'])) $url = $_POST['url'];
