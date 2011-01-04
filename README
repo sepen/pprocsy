@@ -1,0 +1,16 @@
+
+
+                                   pprocsy
+
+
+
+INSTALLATION
+
+  Just copy it to your desired destination (i.e: /var/www/vhosts/mysite.com)
+  and edit the cache_dir variable (if required) in index.php to fit your needs.
+  Set enough write permissions to the directory you configured as cache_dir.
+
+
+BUGS AND REPORTS
+
+  Please contact to me: Jose V Beneyto, <sepen@crux.nu>
