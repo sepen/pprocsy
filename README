@@ -6,9 +6,26 @@
 
 INSTALLATION
 
-  Just copy it to your desired destination (i.e: /var/www/vhosts/mysite.com)
-  and edit the cache_dir variable (if required) in index.php to fit your needs.
-  Set enough write permissions to the directory you configured as cache_dir.
+  - Copy index.php to the installation directory.
+
+  - Edit the $cache_dir variable on the script to configure the
+    directory where store cache contents.
+
+  - Set enough permissions to the cache directory you have configured
+    in order to allow the script to create and read files.
+
+
+CONFIGURATION
+  
+  If you need to restrict the installation directory from being
+  accessed directly by browsers.
+
+  - Copy dot.htaccess to the installation directory and rename the file
+    to .htaccess or the one used by your server's configuration.
+
+  - Edit the .htaccess file to fit your needs. For example, you'll want
+    to change the path to AuthUserFile, or something that fits better
+    your needs.
 
 
 BUGS AND REPORTS

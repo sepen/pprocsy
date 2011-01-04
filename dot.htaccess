@@ -1,0 +1,12 @@
+#
+# .htaccess
+#
+# This file is to prevent scripts from being accessed directly by
+# browsers
+
+AuthUserFile          /absolute/path/to/htpasswd
+AuthType              Basic
+AuthName              "Procsy Restricted Area"
+Require               valid-user
+
+# End of file
