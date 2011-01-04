@@ -5,10 +5,12 @@
 <title>pprocsy</title>
 
 <style type="text/css">
+
 html body
 {
   margin-top: 50px;
 }
+
 .inputform
 {
   z-index: 100000;
@@ -29,25 +31,43 @@ html body
   padding: 1px 4px;
   border: 1px solid #757575;
 }
-.debugmessage
+
+.msgdebug
 {
   margin: 1px 0;
   padding: 1px 4px;
-  font-size: x-small;
+  font-size: small;
+  color: blue;
+  background: white;
+  display: block;
+  border: 1px solid blue;
+}
+.msgdebug .item
+{
+  color: #000;
+}
+
+.msgerror
+{
+  margin: 1px 0;
+  padding: 1px 4px;
+  font-size: small;
   color: #c40505;
   background: white;
   display: block;
   border: 1px solid #c40505;
 }
-.debugmessage .item
+.msgerror .item
 {
   color: #000;
 }
+
 .iframearea
 {
   width: 100%;
   border: 0;
 }
+
 </style>
 
 </head>
@@ -60,21 +80,42 @@ html body
 
 <?php
 
-function debugPrint($item, $value)
+function msgDebug($item, $value)
 {
   $debug = false;
 
   if ($debug)
   {
-    echo "<div class=\"debugmessage\">\n";
+    echo "<div class=\"msgdebug\">\n";
+    echo "<span>DEBUG</span>\n";
     echo "<span class=\"item\">".$item."</span>\n";
     echo "<span class=\"value\">".$value."</span>\n";
     echo "</div>\n";
   }
 }
 
+function msgError($item, $value)
+{
+  echo "<div class=\"msgerror\">\n";
+  echo "<span>ERROR</span>\n";
+  echo "<span class=\"item\">".$item."</span>\n";
+  echo "<span class=\"value\">".$value."</span>\n";
+  echo "</div>\n";
+}
+
+function checkUrl($url)
+{
+  if (empty($url)) return false;
+  # only admin http protocol
+  if (substr($url, 0, 7) != "http://") return false;
+  return true;
+}
+
 function filterLine($line)
 {
+  // TODO
+  // convert relative links for every href="relative/link"
+  // convert absolute links for every href="http://absolute/link"
   $output = $line;
   return $output;
 }
@@ -83,12 +124,12 @@ function printPage($url, $cache_dir)
 {
   $html = "";
 
-  debugPrint("getPage::cache_dir", $cache_dir);
-  debugPrint("getPage::url", $url);
+  msgDebug("printPage::cache_dir", $cache_dir);
+  msgDebug("printPage::url", $url);
 
   $filename = md5($url);
 
-  debugPrint("getPage:filename", $filename);
+  msgDebug("printPage::filename:", $filename);
 
   // if file was not cached then get with curl
   if (!file_exists($filename))
@@ -98,8 +139,8 @@ function printPage($url, $cache_dir)
     $ret = curl_exec($res);
     curl_close($res);
 
-    debugPrint("getPage::res: ", $res);
-    debugPrint("getPage::ret: ", $ret);
+    msgDebug("getPage::res", $res);
+    msgDebug("getPage::ret", $ret);
 
     file_put_contents($cache_dir."/".$filename, $ret);
   }
@@ -108,7 +149,7 @@ function printPage($url, $cache_dir)
   {
     while ($line = fgets($fp))
     {
-      debugPrint("getPage::line: ", $line);
+      msgDebug("getPage::line", htmlspecialchars($line));
 
       $html .= filterLine($line);
     }
@@ -124,12 +165,16 @@ function printPage($url, $cache_dir)
 /* ************************************************************************** */
 
 $cache = "./cache";
+
+if (!is_dir($cache)) msgError("cache dir not found", $cache);
+if (!is_writable($cache)) msgError("cache dir not writable", $cache);
+
 $url = "";
 
 if (isset($_POST['url'])) $url = $_POST['url'];
 if (isset($_GET['url'])) $url = $_GET['url'];
 
-printPage($url, $cache);
+if (checkUrl($url)) printPage($url, $cache);
 
 ?>
 
