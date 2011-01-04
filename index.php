@@ -35,6 +35,11 @@
 {
   color: #000;
 }
+.iframearea
+{
+  width: 100%;
+  border: 0;
+}
 </style>
 
 </head>
@@ -60,7 +65,7 @@ function debugPrint($item, $value)
   }
 }
 
-function getPage($url, $cache_dir)
+function printPage($url, $cache_dir)
 {
   $html = "";
 
@@ -96,7 +101,8 @@ function getPage($url, $cache_dir)
     fclose($fp);
   }
 
-  return $html;
+  //echo "<iframe class=\"iframearea\" scrolling=\"no\" src=\"".$cache_dir."/".$filename."\" />";
+  echo $html;
 }
 
 /* ************************************************************************** */
@@ -109,7 +115,7 @@ $url = "";
 if (isset($_POST['url'])) $url = $_POST['url'];
 if (isset($_GET['url'])) $url = $_GET['url'];
 
-echo getPage($url, $cache);
+printPage($url, $cache);
 
 ?>
 
