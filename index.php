@@ -11,27 +11,6 @@ html body
   margin-top: 50px;
 }
 
-.inputform
-{
-  z-index: 100000;
-  display: inline;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 28px;
-  margin: 0 0 2px 0;
-  border: 1px solid #c40505;
-  font-size: small;
-  color: #000000;
-  background: #000000;
-}
-.inputform input
-{
-  padding: 1px 4px;
-  border: 1px solid #757575;
-}
-
 .msgdebug
 {
   margin: 1px 0;
@@ -62,6 +41,34 @@ html body
   color: #000;
 }
 
+.panel
+{
+  z-index: 100000;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 28px;
+  color: white;
+  background: black;
+}
+.panel span
+{
+  margin: 0 0 0 2px;
+}
+.panel span a
+{
+  color: white;
+  text-decoration: none;
+}
+.panel .url
+{
+  color: black;
+  border: 1px solid grey;
+  background: white;
+}
+
 .iframearea
 {
   width: 100%;
@@ -74,9 +81,12 @@ html body
 
 <body>
 
-<form  class="inputform" action="?" method="post">
-<input type="submit" value="url" /><input type="text" name="url" size=50 />
+<div class="panel">
+<form action="?" method="post">
+<span><a href="index.php">procsy</a></span>
+<span><input class="url" type="text" name="url" size=60 /></span>
 </form>
+</div>
 
 <?php
 
@@ -86,6 +96,7 @@ function msgDebug($item, $value)
 
   if ($debug)
   {
+    $value = htmlspecialchars($value);
     echo "<div class=\"msgdebug\">\n";
     echo "<span>DEBUG</span>\n";
     echo "<span class=\"item\">".$item."</span>\n";
@@ -96,6 +107,7 @@ function msgDebug($item, $value)
 
 function msgError($item, $value)
 {
+  $value = htmlspecialchars($value);
   echo "<div class=\"msgerror\">\n";
   echo "<span>ERROR</span>\n";
   echo "<span class=\"item\">".$item."</span>\n";
@@ -115,9 +127,10 @@ function filterLine($line)
 {
   // TODO
   // convert relative links for every href="relative/link"
-  // convert absolute links for every href="http://absolute/link"
-  $output = $line;
-  return $output;
+  $line = str_replace('href="http://', 'href="?url=http://', $line);
+  $line = str_replace("href='http://", "href='?url=http://", $line);
+  msgDebug("filterLine::line", $line);
+  return $line;
 }
 
 function printPage($url, $cache_dir)
@@ -149,7 +162,7 @@ function printPage($url, $cache_dir)
   {
     while ($line = fgets($fp))
     {
-      msgDebug("getPage::line", htmlspecialchars($line));
+      msgDebug("getPage::line", $line);
 
       $html .= filterLine($line);
     }
