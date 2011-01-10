@@ -48,10 +48,16 @@ html body
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
   height: 28px;
-  color: white;
-  background: black;
+  color: black;
+  background: #edeeef;
+  padding: 4px 1px 1px 1px;
+  border: 1px solid #aaaaaa;
+}
+.panel input
+{
+  height: 24px;
+  padding: 0 4px;
 }
 .panel span
 {
@@ -59,13 +65,13 @@ html body
 }
 .panel span a
 {
-  color: white;
+  color: black;
   text-decoration: none;
 }
 .panel .url
 {
   color: black;
-  border: 1px solid grey;
+  border: 1px solid black;
   background: white;
 }
 
@@ -84,7 +90,7 @@ html body
 <div class="panel">
 <form action="?" method="post">
 <span><a href="index.php">procsy</a></span>
-<span><input class="url" type="text" name="url" size=60 /></span>
+<span><input class="url" type="text" name="url" size=40 /></span>
 </form>
 </div>
 
