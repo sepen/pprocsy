@@ -123,9 +123,14 @@ function msgError($item, $value)
 
 function checkUrl($url)
 {
+  // discard empty urls
   if (empty($url)) return false;
-  # only admin http protocol
+  // discard urls which doesn't start with http://
   if (substr($url, 0, 7) != "http://") return false;
+  // discard urls which could be a potential injection risk
+  preg_match("/http:\/\//", substr($url, 7, strlen($url)), $matches, PREG_OFFSET_CAPTURE);
+  if (count($matches) > 0) return false;
+  // if nothing is wrong then return true
   return true;
 }
 
@@ -194,6 +199,7 @@ if (isset($_POST['url'])) $url = $_POST['url'];
 if (isset($_GET['url'])) $url = $_GET['url'];
 
 if (checkUrl($url)) printPage($url, $cache);
+else msgError("input is not a valid url", "snip!! snip!! snip!!");
 
 ?>
 
