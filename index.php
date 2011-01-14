@@ -136,10 +136,10 @@ function checkUrl($url)
 
 function filterLine($line)
 {
-  // TODO
-  // convert relative links for every href="relative/link"
-  $line = str_replace('href="http://', 'href="?url=http://', $line);
-  $line = str_replace("href='http://", "href='?url=http://", $line);
+  // TODO: replace relative links for every href="foo/bar/..."
+  // replace absolute links for every href="http://...."
+  $line = preg_replace("/<a (.*)? href=\"http:\/\/(.*)/i", "<a \\1 href=\"?url=http://\\2", $line);
+  $line = preg_replace("/<a (.*)? href='http:\/\/(.*)/i", "<a \\1 href='?url=http://\\2", $line);
   msgDebug("filterLine::line", $line);
   return $line;
 }
@@ -199,7 +199,6 @@ if (isset($_POST['url'])) $url = $_POST['url'];
 if (isset($_GET['url'])) $url = $_GET['url'];
 
 if (checkUrl($url)) printPage($url, $cache);
-else msgError("input is not a valid url", "snip!! snip!! snip!!");
 
 ?>
 
