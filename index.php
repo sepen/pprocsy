@@ -138,8 +138,30 @@ function filterLine($line)
 {
   // TODO: replace relative links for every href="foo/bar/..."
   // replace absolute links for every href="http://...."
-  $line = preg_replace("/<a (.*)? href=\"http:\/\/(.*)/i", "<a \\1 href=\"?url=http://\\2", $line);
-  $line = preg_replace("/<a (.*)? href='http:\/\/(.*)/i", "<a \\1 href='?url=http://\\2", $line);
+  if ((preg_match("/<a href=\"http:\/\//", $line))
+  or (preg_match("/<a href='http:\/\//", $line)))
+  {
+    $line = preg_replace("/<a href=\"http:\/\/(.*)/i", "<a href=\"?url=http://\\1", $line);
+    $line = preg_replace("/<a href='http:\/\/(.*)/i", "<a href='?url=http://\\1", $line);
+  }
+  elseif ((preg_match("/<a (.*)? href=\"http:\/\//", $line))
+  or (preg_match("/<a (.*)? href='http:\/\//", $line)))
+  {
+    $line = preg_replace("/<a (.*)? href=\"http:\/\/(.*)/i", "<a \\1 href=\"?url=http://\\2", $line);
+    $line = preg_replace("/<a (.*)? href='http:\/\/(.*)/i", "<a \\1 href='?url=http://\\2", $line);
+  }
+  elseif ((preg_match("/<a href=\"(.*)/", $line))
+  or (preg_match("/<a href='http:(.*)/", $line)))
+  {
+    $line = preg_replace("/<a href=\"(.*)/i", "<a href=\"?url=baseurl/\\1", $line);
+    $line = preg_replace("/<a href='(.*)/i", "<a href='?url=baseurl/\\1", $line);
+  }
+  elseif ((preg_match("/<a (.*)? href=\"(.*)/", $line))
+  or (preg_match("/<a (.*)? href='http:(.*)/", $line)))
+  {
+    $line = preg_replace("/<a (.*)? href=\"(.*)/i", "<a \\1 href=\"?url=baseurl/\\2", $line);
+    $line = preg_replace("/<a (.*)? href='(.*)/i", "<a \\1 href='?url=baseurl/\\2", $line);
+  }
   msgDebug("filterLine::line", $line);
   return $line;
 }
